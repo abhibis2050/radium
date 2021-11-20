@@ -1,50 +1,45 @@
-const mongoose=require('mongoose')
+const mongoose = require('mongoose')
 
-const bookSchema= new mongoose.Schema({
+const bookSchema = new mongoose.Schema ({
 
-//String
-//Number
-// Boolean
-// Array
-// Object
-// Date
-// Buffer
-// ObjectId
-
+  
     bookName: {
         type: String,
         required: true
     },
-    ISBN: {
+
+    authorName: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
-    author: String,
-    tags: [ String ], //array of strings 
-    year: Number,
+    year: {
+        type: Number,
+        default: 2021
+    },
+
     isPublished: {
-        type: Boolean, //Boolean
+        type: Boolean,
         default: false
     },
+
     prices: {
         indianPrice: String,
-        europeanPrice: String,
-        usaPrice: String,
-        nepalPrice: String,
-        japanPrice: String,
-        chinesePrice: String,
-        sudanPrice: String
+        europeanPrice: String
     },
-    sales: {
-        type: Number,
-        default : 0
-    },
-    completionDate: Date
 
-}, {timestamps: true} )
+    tags: [String],
+    totalPages: Number,
+    stockAvailable:{
+        type:Boolean,
+        default:false}
+   
+},
 
-module.exports = mongoose.model( 'Book', bookSchema ) 
+    { timestrap: true }
+
+)
+
+module.exports = mongoose.model( 'BookAssign', bookSchema)
 
 
 
