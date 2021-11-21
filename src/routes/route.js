@@ -1,36 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const UserModel= require("../models/userModel")
+// const UserModel= require("../models/userModel")
+const BookModel= require("../models/bookassign")
+const AuthorModel= require("../models/authorModel")
 
-const UserController= require("../controllers/userController")
+// const UserController= require("../controllers/userController")
 const BookController= require("../controllers/bookController")
-const AssignmentBookController= require("../controllers/assignmentBookController")
+
 
 
 router.get('/test-me', function (req, res) {
     res.send('My first ever api!')
 });
 
-router.post('/createUser',  UserController.createUser  );
-router.get('/getAllUsers',  UserController.getUsersData  );
-
-router.post('/createBook',  BookController.createBook  );
-router.get('/getAllBooks',  BookController.getBooksData  );
-
-// mongo session 3: session/schema-basic3
-router.get('/getFirstBook',  BookController.getBook  );
-router.post('/updateBooks',  BookController.updateBooks  );
-
-router.post('/deleteBook',  BookController.deleteBook  );
-
-
-// Previous Day asignment API's
-router.post('/createBook',  AssignmentBookController.createBook  );
-router.get('/bookList',  AssignmentBookController.allBooksList  );
-router.post('/getParticularBooks',  AssignmentBookController.particularBooks  );
- router.post('/getBooksInYear',AssignmentBookController.yearDetails);
-router.get('/getXINRBooks',  AssignmentBookController.priceDetails  );
-router.get('/getRandomBooks', AssignmentBookController.randomBooks  );
+router.post('/createBook', BookController.createBook);
+router.post('/createAuthor',  BookController.createAuthor);
+router.get('/booksByChetanBhagat',BookController.booksByChetanBhagat);
+router.get('/updateprice',  BookController.updateprice);
+router.get('/fb', BookController.fb);
 
 
 

@@ -1,48 +1,52 @@
-const BookModel = require("../models/bookModel.js");
+const BookModel = require("../models/bookassign");
+const AuthorModel = require("../models/authorModel");
 const mongoose = require("mongoose");
 
 const createBook = async function (req, res) {
   const book = req.body;
-  let savedBook = await BookModel.create(book);
+  const savedBook = await BookModel.create(book);
   res.send({ msg: savedBook });
 };
-
-const getBooksData = async function (req, res) {
-  let allBooks = await BookModel.find();
-  res.send({ msg: allBooks });
+const createAuthor = async function (req, res) {
+  const author = req.body;
+  const savedAuthor = await AuthorModel.create(author);
+  res.send({ msg: savedAuthor });
 };
 
-const getBook = async function (req, res) {
-  let book = await BookModel.findOne (  {sales: 9 });
-//   if (book.length != 0 ) {
-    if (book ) { // any value present (except falsey) gets evaluated as true... null, 0  automatically defaults to false
-      console.log("HI I FOUND A BOOK")
+const booksByChetanBhagat = async function (req, res) {
+  let cbBooks = await AuthorModel.find({author_name:"Chetan Bhagat"});
+  let authorID = cbBooks[0].author_id
+  let bookfind=await BookModel.find({author_id:authorID})
+  res.send({ msg: bookfind });
+};
+let updateprice = async function(req,res){
+  let ai = await BookModel.findOne({name:"Two states"}).select({author_id: 1})
+  let aid =  ai.author_id
+  let up = await BookModel.findOneAndUpdate({"author_id":aid},{price:100},{new: true})
+  let an = await AuthorModel.findOne({"author_id":aid})
+  let rex = { "author_name":an.author_name,"price":up.price}
+  res.send(rex)
+}
+
+let fb = async function(req,res) {
+  let ad = await BookModel.find ({ price: {$gte : 50 ,$lte : 100}})
+
+  let aname = []
+
+  for(i=0;i<ad.length;i++){
+    let authorids = ad[i].author_id
+    let resultobjs = await AuthorModel.findOne({"authod_id" : authorids})
+    aname.push(resultobjs.author_name)
   }
-  else console.log("NO BOOK FOUND")
-  res.send( book );
-};
-
-const updateBooks = async function (req, res) {
-//   let books = await BookModel.updateMany (  {isPublished: false } ,  {author : "PK"}   );  // first json is the query condition  || second condition is the required update or change
-//   let books = await BookModel.findOneAndUpdate(  {isPublished: true } ,  {author : "Sabiha"}   );  // it updates only the first matching doc
-//   let books = await BookModel.findOneAndUpdate(  {isPublished: true } ,  {author : "Sabiha 3"} , { new: true}  );  // third param : new: true - will give you the updated document
-  
-//  upsert: true - it finds and updates the document but if the doc is not found(i.e it does not exist) then it creates a new document
-let books = await BookModel.findOneAndUpdate(  {bookName : "Hi Pritesh2" } ,  {bookName : "Hi My New Book" , ISBN : "basd87g8h7a88b"} , { upsert: true}  );  
-  
-//   { author : "PK" }
-//   { $set: {author: "PK"}   }
-  res.send( books );
-};
-
-
-const deleteBook = async function (req, res) {
-    let books = await BookModel.findOneAndUpdate(  req.body ,  {isDeleted: true}  );  
-    res.send( books );
-};
+function uniqeonly(value,index,self){
+  return self.indexOf(value) == index
+}
+let final = aname.filter(uniqeonly)
+res.send(final)
+}
 
 module.exports.createBook = createBook;
-module.exports.getBooksData = getBooksData;
-module.exports.getBook = getBook;
-module.exports.updateBooks = updateBooks;
-module.exports.deleteBook = deleteBook;
+module.exports.createAuthor = createAuthor;
+module.exports.booksByChetanBhagat = booksByChetanBhagat;
+module.exports.updateprice = updateprice;
+module.exports.fb = fb;
