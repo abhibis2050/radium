@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Schema.Types.ObjectId
 
+
 const bookSchema= new mongoose.Schema({
 
 
@@ -8,47 +9,35 @@ const bookSchema= new mongoose.Schema({
         type: String,
         required: true
     },
-    ISBN: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    author: {
+       author: {
         type: ObjectId,
-        ref: 'Author'
+        ref: 'myAuthor'
     },
-    tags: [ String ], //array of strings 
+    tags: [ String ], 
     year: {type: Number, default: 2021},
     isPublished: {
-        type: Boolean, //Boolean
+        type: Boolean,
         default: false
+    },
+    publisher:{
+        type:ObjectId,
+        ref: "myPublisher"
     },
     prices: {
         indianPrice: String,
         europeanPrice: String,
-        usaPrice: String,
-        nepalPrice: String,
-        japanPrice: String,
-        chinesePrice: String,
-        sudanPrice: String
+              
     },
     sales: {
         type: Number,
         default : 0
     },
-    completionDate: {type: Date, default: Date.now }, //new Date()  //momentjs
+    completionDate: {type: Date, default: Date.now }, 
     summary: mongoose.Schema.Types.Mixed,
 
     isDeleted : {type: Boolean, default: false}
 
-    // summary : "this is a suspense novel"
-    //  summary : ["ch1: Intro to backend", "ch2: intro to mongodb", "ch3: intro to nodejs:"]
-    // summary : { 
-    //              chapter1: "How to get started with tech",
-    //              chapter2: "lets start with basics"
-    //             }
-
 }, {timestamps: true} )
 
-module.exports = mongoose.model( 'Book1', bookSchema ) 
+module.exports = mongoose.model( 'myBook', bookSchema ) 
 
